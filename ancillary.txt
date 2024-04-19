@@ -1,0 +1,121 @@
+(*  This is the anciliary to "General Relativity from Intersection Theory" by Hjalte Frellesvig and Toni Teschke  *)
+
+
+
+(* about the reductions (for the box sector): *)
+
+u = (2*mm1*mm2*t-mm1^2*t-mm2^2*t+2*mm1*s*t+2*mm2*s*t-s^2*t-2*mm1*t*z1+2*mm2*t*z1+2*s*t*z1+4*mm2*z1^2-t*z1^2+2*mm1*t*z2-2*mm2*t*z2+2*s*t*z2-4*mm1*z1*z2-4*mm2*z1*z2+4*s*z1*z2+2*t*z1*z2+4*mm1*z2^2-t*z2^2)^((d-5)/2);
+
+omega = {((d-5)*(-(s*t)+t*z1-mm2*(t+4*z1-2*z2)-2*s*z2-t*z2+mm1*(t+2*z2)))/(mm1^2*t+mm2^2*t+s^2*t-2*s*t*z1+t*z1^2-2*mm2*(s*t+(t+2*z1)*(z1-z2))-2*s*t*z2-4*s*z1*z2-2*t*z1*z2+t*z2^2-2*mm1*(mm2*t+s*t-(z1-z2)*(t+2*z2))), -(((d-5)*(s*t+2*s*z1+t*z1-mm2*(t+2*z1)-t*z2+mm1*(t-2*z1+4*z2)))/(mm1^2*t+mm2^2*t+s^2*t-2*s*t*z1+t*z1^2-2*mm2*(s*t+(t+2*z1)*(z1-z2))-2*s*t*z2-4*s*z1*z2-2*t*z1*z2+t*z2^2-2*mm1*(mm2*t+s*t-(z1-z2)*(t+2*z2))))};
+
+(* these are e and h *)
+eOuter = {1, 1/z1, 1/z2, 1/(z1*z2)};
+hOuter = {1, DEL[z1], DEL[z2], DEL[z1,z2]};
+
+eInner = {1, 1/z1};
+hInner = {1, DEL[z1]};
+
+toreduce = {1, 1/z1, z1, z1^2, 1/z2, 1/(z1*z2), z1/z2, z1^2/z2, z2, z2/z1, z2^2, z2^2/z1};
+
+leftterms = Join[toreduce, eOuter];
+
+
+
+(* We now do the z1 intersections: *)
+
+
+(*   This is   < eInner | hInner > : *)
+C1 = {{(4*(d-5)*(mm1^2-2*mm1*mm2+mm2^2-2*mm1*s-2*mm2*s+s^2+s*t)*(mm2*t+t*z2+z2^2))/((d-6)*(d-4)*(4*mm2-t)^2),0},
+{-((-mm1*t+mm2*t+s*t-2*mm1*z2-2*mm2*z2+2*s*z2+t*z2)/((d-6)*(4*mm2-t))),1}};
+
+(*   This is   < (d + omega1) eInner | hInner > . C1^(-1)  *)
+Omega = {{((d-4)*(t+2*z2))/(2*(mm2*t+z2*(t+z2))),0},
+{((d-4)*(4*mm2-t)*t*(mm1+mm2-s+z2))/(2*(mm2*t+z2*(t+z2))*(mm1^2*t+t*(mm2-s+z2)^2-2*mm1*(mm2*t+s*t+z2*(t+2*z2)))),((d-5)*(t*(mm2-s+z2)-mm1*(t+4*z2)))/(mm1^2*t+t*(mm2-s+z2)^2-2*mm1*(mm2*t+s*t+z2*(t+2*z2)))}};
+
+(*   This is   < leftterms | hInner > . C1^(-1)   *)
+phi2left = {{1,0}, {0,1}, {-((s*t+mm2*(t-2*z2)+2*s*z2+t*z2-mm1*(t+2*z2))/(4*mm2-t)),0}, {(4*mm2^3*t-2*s^2*t^2+d*s^2*t^2-4*s^2*t*z2+4*d*s^2*t*z2+2*d*s*t^2*z2-4*s^2*z2^2+4*d*s^2*z2^2-4*s*t*z2^2+4*d*s*t*z2^2-2*t^2*z2^2+d*t^2*z2^2+mm2^2*(-8*s*t+(d-2)*t^2-4*(d-3)*t*z2+4*(d-1)*z2^2)+mm1^2*(4*mm2*t+(d-2)*t^2+4*(d-1)*t*z2+4*(d-1)*z2^2)+2*mm2*(2*s^2*t+(d-2)*t*(t-2*z2)*z2+4*s*z2*(-t+z2)+d*s*(t^2-4*z2^2))-2*mm1*(4*mm2^2*t+(d-2)*t*z2*(t+2*z2)+mm2*(4*s*t+(d-2)*t^2+4*t*z2-4*(d-3)*z2^2)+s*((d-2)*t^2+4*(d-1)*t*z2+4*(d-1)*z2^2)))/((d-2)*(-4*mm2+t)^2),0}, {z2^(-1),0}, {0,z2^(-1)}, {-((-(mm1*t)+mm2*t+s*t-2*mm1*z2-2*mm2*z2+2*s*z2+t*z2)/(4*mm2*z2-t*z2)),0}, {(4*mm2^3*t-2*s^2*t^2+d*s^2*t^2-4*s^2*t*z2+4*d*s^2*t*z2+2*d*s*t^2*z2-4*s^2*z2^2+4*d*s^2*z2^2-4*s*t*z2^2+4*d*s*t*z2^2-2*t^2*z2^2+d*t^2*z2^2+mm2^2*(-8*s*t+(d-2)*t^2-4*(d-3)*t*z2+4*(d-1)*z2^2)+mm1^2*(4*mm2*t+(d-2)*t^2+4*(d-1)*t*z2+4*(d-1)*z2^2)+2*mm2*(2*s^2*t+(d-2)*t*(t-2*z2)*z2+4*s*z2*(-t+z2)+d*s*(t^2-4*z2^2))-2*mm1*(4*mm2^2*t+(d-2)*t*z2*(t+2*z2)+mm2*(4*s*t+(d-2)*t^2+4*t*z2-4*(d-3)*z2^2)+s*((d-2)*t^2+4*(d-1)*t*z2+4*(d-1)*z2^2)))/((d-2)*(-4*mm2+t)^2*z2),0}, {z2,0}, {0,z2}, {z2^2,0}, {0,z2^2}, {1,0}, {0,1}, {z2^(-1),0}, {0,z2^(-1)}};
+
+(*   This is   < eInner | hOuter >       ( without any C1^(-1) )  *)
+phi2right = {{(4*(d-5)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(mm2*t+z2*(t+z2)))/((d-6)*(d-4)*(4*mm2-t)^2),0,(4*(d-5)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(mm2*t+z2*(t+z2))*DEL[z2])/((d-6)*(d-4)*(4*mm2-t)^2),0}, {-((s*t+mm2*(t-2*z2)+2*s*z2+t*z2-mm1*(t+2*z2))/((d-6)*(4*mm2-t))),1,-(((s*t+mm2*(t-2*z2)+2*s*z2+t*z2-mm1*(t+2*z2))*DEL[z2])/((d-6)*(4*mm2-t))),DEL[z2]}};
+
+
+
+(* and now we do the z2 intersections: *)
+(* that is < leftterms | hOuter > *)
+
+
+IntersectionResults = {{-(t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(4*(d-7)*(d-3)), 0, 0, 0},
+{(t^2*((44-8*d)*mm1+(d-6)*t)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(2*(d-7)*(d-6)*(d-4)*(4*mm1-t)^2), (4*(d-5)*mm1*t*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/((d-6)*(d-4)*(4*mm1-t)^2), 0, 0},
+{(t^3*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(8*(d-7)*(d-3)), 0, 0, 0},
+{-(t^3*(-4*mm1+d*t)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(16*(d-7)*(d-3)*(d-1)), 0, 0, 0},
+{(t^2*((44-8*d)*mm2+(d-6)*t)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(2*(d-7)*(d-6)*(d-4)*(4*mm2-t)^2), 0, (4*(d-5)*mm2*t*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/((d-6)*(d-4)*(4*mm2-t)^2), 0},
+{(t^2*(2*mm1^2+2*mm2^2-2*mm2*s-2*mm1*(2*mm2+s)+s*t))/((d-7)*(d-6)*(4*mm2-t)*(-4*mm1+t)), -(((mm1-mm2+s)*t)/((d-6)*(4*mm1-t))), -(((-mm1+mm2+s)*t)/((d-6)*(4*mm2-t))), 1},
+{(t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(-32*(24-10*d+d^2)*mm2^3+(d-6)*t^2*(-2*s+(d-4)*t)+8*mm2^2*(4*(24-10*d+d^2)*s+3*(43-19*d+2*d^2)*t)-2*mm2*t*(-12*(d-5)*s+(138-59*d+6*d^2)*t)-2*mm1*(16*(24-10*d+d^2)*mm2^2+12*(d-5)*mm2*t-(d-6)*t^2)))/(4*(d-7)*(d-6)*(d-4)*(d-3)*(4*mm2-t)^3), 0, (-4*(d-5)*mm2*(-mm1+mm2+s)*t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/((d-6)*(d-4)*(4*mm2-t)^3), 0},
+{(t^3*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(192*(-67+53*d-13*d^2+d^3)*mm2^4-64*mm2^3*(2*(-105+71*d-15*d^2+d^3)*s+(-201+178*d-48*d^2+4*d^3)*t)-8*mm1^2*(8*(9+17*d-9*d^2+d^3)*mm2^2+8*(-9+2*d)*mm2*t-(d-6)*t^2)+16*mm1*(mm2+s)*(8*(9+17*d-9*d^2+d^3)*mm2^2+8*(-9+2*d)*mm2*t-(d-6)*t^2)+(d-6)*t^2*(8*s^2-4*(d-4)*s*t+(8-6*d+d^2)*t^2)-8*mm2^2*(8*(9+17*d-9*d^2+d^3)*s^2+8*(105-52*d+6*d^2)*s*t+(582-529*d+144*d^2-12*d^3)*t^2)-16*mm2*t*(4*(-9+2*d)*s^2-2*(42-19*d+2*d^2)*s*t+(-48+44*d-12*d^2+d^3)*t^2)))/(8*(d-7)*(d-6)*(d-4)*(d-3)*(d-2)*(4*mm2-t)^4), 0, (4*(d-5)*mm2*t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(4*mm2^3+(d-2)*s^2*t+mm1^2*(4*mm2+(d-2)*t)-2*mm1*(mm2+s)*(4*mm2+(d-2)*t)+mm2^2*(-8*s+(d-2)*t)+2*mm2*s*(2*s+d*t)))/((d-6)*(d-4)*(d-2)*(4*mm2-t)^4), 0},
+{(t^3*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(8*(d-7)*(d-3)), 0, 0, 0},
+{(t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(-32*(24-10*d+d^2)*mm1^3+(d-6)*t^2*(2*mm2-2*s+(d-4)*t)-8*mm1^2*(4*(24-10*d+d^2)*mm2-4*(24-10*d+d^2)*s-3*(43-19*d+2*d^2)*t)-2*mm1*t*(12*(d-5)*mm2-12*(d-5)*s+(138-59*d+6*d^2)*t)))/(4*(d-7)*(d-6)*(d-4)*(d-3)*(4*mm1-t)^3), (-4*(d-5)*mm1*(mm1-mm2+s)*t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/((d-6)*(d-4)*(4*mm1-t)^3), 0, 0},
+{-(t^3*(-4*mm2+d*t)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(16*(d-7)*(d-3)*(d-1)), 0, 0, 0},
+{(t^3*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(192*(-67+53*d-13*d^2+d^3)*mm1^4+64*mm1^3*(2*(9+17*d-9*d^2+d^3)*mm2-2*(-105+71*d-15*d^2+d^3)*s+(201-178*d+48*d^2-4*d^3)*t)+(d-6)*t^2*(8*mm2^2-16*mm2*s+8*s^2-4*(d-4)*s*t+(8-6*d+d^2)*t^2)-16*mm1*t*(4*(-9+2*d)*mm2^2-8*(-9+2*d)*mm2*s+4*(-9+2*d)*s^2+(d-6)*mm2*t-2*(42-19*d+2*d^2)*s*t+(-48+44*d-12*d^2+d^3)*t^2)-8*mm1^2*(8*(9+17*d-9*d^2+d^3)*mm2^2+8*(9+17*d-9*d^2+d^3)*s^2+8*(105-52*d+6*d^2)*s*t+(582-529*d+144*d^2-12*d^3)*t^2-16*mm2*((9+17*d-9*d^2+d^3)*s+(-9+2*d)*t))))/(8*(d-7)*(d-6)*(d-4)*(d-3)*(d-2)*(4*mm1-t)^4), (4*(d-5)*mm1*t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t))*(4*mm1^3+(d-2)*(mm2-s)^2*t+mm1^2*(-8*mm2-8*s+(d-2)*t)+2*mm1*(2*mm2^2-mm2*(4*s+(d-2)*t)+s*(2*s+d*t))))/((d-6)*(d-4)*(d-2)*(4*mm1-t)^4), 0, 0},
+{-(t^2*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(4*(d-7)*(d-3)), 0, 0, 0},
+{(t^2*((44-8*d)*mm1+(d-6)*t)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(2*(d-7)*(d-6)*(d-4)*(4*mm1-t)^2), (4*(d-5)*mm1*t*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/((d-6)*(d-4)*(4*mm1-t)^2), 0, 0},
+{(t^2*((44-8*d)*mm2+(d-6)*t)*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/(2*(d-7)*(d-6)*(d-4)*(4*mm2-t)^2), 0, (4*(d-5)*mm2*t*(mm1^2+mm2^2-2*mm2*s-2*mm1*(mm2+s)+s*(s+t)))/((d-6)*(d-4)*(4*mm2-t)^2), 0},
+{(t^2*(2*mm1^2+2*mm2^2-2*mm2*s-2*mm1*(2*mm2+s)+s*t))/((d-7)*(d-6)*(4*mm2-t)*(-4*mm1+t)), -(((mm1-mm2+s)*t)/((d-6)*(4*mm1-t))), -(((-mm1+mm2+s)*t)/((d-6)*(4*mm2-t))), 1}};
+
+C2 = Take[IntersectionResults, {13,16}];
+IntReduce = Take[IntersectionResults, {1,12}];
+
+(* ReductionCoefficients = IntReduce.Inverse[C2]; *)
+
+(* Written as Mathematica rules, that is (with the notation J[a,b] = Int( z1^(-a) * z2^(-b)) )   *)
+
+ReductionRules = {J[0,0]->J[0,0], J[1,0]->J[1,0], J[-1,0]->-(t*J[0,0])/2, J[-2,0]->(t*(-4*mm1+d*t)*J[0,0])/(4*(d-1)), J[0,1]->J[0,1], J[1,1]->J[1,1], J[-1,1]->((2*(mm1+mm2-s)-t)*J[0,0]+(mm1-mm2-s)*t*J[0,1])/(4*mm2-t), J[-2,1]->(t*(4*(d-1)*mm1^2-8*(d-1)*mm1*(mm2+s)-4*(mm2-s)*((-7+3*d)*mm2+(d-1)*s)+4*(2*(d-2)*mm2+s)*t-(d-2)*t^2)*J[0,0]+2*t*(4*mm2*(mm1^2+(mm2-s)^2-2*mm1*(mm2+s))+((d-2)*(mm1-mm2)^2-2*(d-2)*mm1*s+2*d*mm2*s+(d-2)*s^2)*t)*J[0,1])/(2*(d-2)*(4*mm2-t)^2), J[0,-1]->-(t*J[0,0])/2, J[1,-1]->((2*(mm1+mm2-s)-t)*J[0,0]-(mm1-mm2+s)*t*J[1,0])/(4*mm1-t), J[0,-2]->(t*(-4*mm2+d*t)*J[0,0])/(4*(d-1)), J[1,-2]->(t*(4*(7-3*d)*mm1^2+4*(d-1)*(mm2-s)^2+4*s*t-(d-2)*t^2+8*mm1*(mm2-d*mm2+(d-3)*s+(d-2)*t))*J[0,0]+2*t*(4*mm1*(mm1^2+(mm2-s)^2-2*mm1*(mm2+s))+((d-2)*mm1^2-2*(d-2)*mm1*mm2+(d-2)*(mm2-s)^2+2*d*mm1*s)*t)*J[1,0])/(2*(d-2)*(4*mm1-t)^2)};
+
+
+(* For the crossed box sector, we may extract the rules like this: *)
+(* 
+XredLHS = Table[ReductionRules[[i,1]], {i,Length[ReductionRules]}]/.{J:>Jx};
+XredRHS = Table[ReductionRules[[i,2]], {i,Length[ReductionRules]}]/.{J:>Jx}/.{s->2*mm1+2*mm2-s-t};
+XReductionRules = Table[XredLHS[[i]]->XredRHS[[i]], {i,Length[ReductionRules]}];
+*)
+
+
+
+(* Let us discuss the Feynman diagrams: *)
+
+(* The five diagrams that go in the box-family give after applying the Feynman rules and performing the cut: *)
+(* The five diagrams are in the order  1,3,4,5,6  in the figure  *)
+
+boxdiagrams = {((mm1+mm2-s)^2*J[-1,1])/16+((mm1+mm2-s)^2*J[0,0])/8+((mm1+mm2-s)*(-2*mm1^2+d*mm1^2-8*mm1*mm2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2)*J[0,1])/(8*(d-2))+((mm1+mm2-s)^2*J[1,-1])/16+((mm1+mm2-s)*(-2*mm1^2+d*mm1^2-8*mm1*mm2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2)*J[1,0])/(8*(d-2))+((-2*mm1^2+d*mm1^2-8*mm1*mm2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2)^2*J[1,1])/(16*(d-2)^2),
+((-2*mm2+t)*J[-2,1])/16-((-12*mm1*mm2+4*d*mm1*mm2-12*mm2^2+4*d*mm2^2+12*mm2*s-4*d*mm2*s+2*mm1*t-d*mm1*t+6*mm2*t-2*d*mm2*t-2*s*t+d*s*t)*J[-1,1])/(8*(d-2))-((-2*mm1^2+d*mm1^2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2+2*mm1*t-d*mm1*t-4*mm2*t+d*mm2*t-2*s*t+d*s*t)*J[0,0])/(8*(d-2))-((-24*mm1^2*mm2+8*d*mm1^2*mm2-48*mm1*mm2^2+16*d*mm1*mm2^2-24*mm2^3+8*d*mm2^3+48*mm1*mm2*s-16*d*mm1*mm2*s+48*mm2^2*s-16*d*mm2^2*s-24*mm2*s^2+8*d*mm2*s^2+2*mm1^2*t-d*mm1^2*t+16*mm1*mm2*t-6*d*mm1*mm2*t+2*mm2^2*t-d*mm2^2*t-4*mm1*s*t+2*d*mm1*s*t-16*mm2*s*t+6*d*mm2*s*t+2*s^2*t-d*s^2*t)*J[0,1])/(16*(d-2)),
+-((-2*mm1^2+d*mm1^2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2-4*mm1*t+d*mm1*t+2*mm2*t-d*mm2*t-2*s*t+d*s*t)*J[0,0])/(8*(d-2))+((-2*mm1+t)*J[1,-2])/16-((-12*mm1^2+4*d*mm1^2-12*mm1*mm2+4*d*mm1*mm2+12*mm1*s-4*d*mm1*s+6*mm1*t-2*d*mm1*t+2*mm2*t-d*mm2*t-2*s*t+d*s*t)*J[1,-1])/(8*(d-2))-((-24*mm1^3+8*d*mm1^3-48*mm1^2*mm2+16*d*mm1^2*mm2-24*mm1*mm2^2+8*d*mm1*mm2^2+48*mm1^2*s-16*d*mm1^2*s+48*mm1*mm2*s-16*d*mm1*mm2*s-24*mm1*s^2+8*d*mm1*s^2+2*mm1^2*t-d*mm1^2*t+16*mm1*mm2*t-6*d*mm1*mm2*t+2*mm2^2*t-d*mm2^2*t-16*mm1*s*t+6*d*mm1*s*t-4*mm2*s*t+2*d*mm2*s*t+2*s^2*t-d*s^2*t)*J[1,0])/(16*(d-2)),
+-J[-2,0]/32+((d-3)*mm2*(2*mm2-t)*J[-2,1])/(8*(d-2)*t)-((-96*mm1*mm2+32*d*mm1*mm2-96*mm2^2+32*d*mm2^2+96*mm2*s-32*d*mm2*s-4*mm1*t+2*d*mm1*t+44*mm2*t-14*d*mm2*t+4*s*t-2*d*s*t-2*t^2+d*t^2)*J[-1,0])/(64*(d-2)*t)+(mm2*(-6*mm1-18*mm2+4*d*mm2+6*s+9*t-2*d*t)*J[-1,1])/(16*(d-2))-((-32*mm1*mm2-32*mm2*t+8*d*mm2*t-2*t^2+d*t^2)*J[0,-1])/(64*(d-2)*t)+((-16*mm1^2+8*d*mm1^2+48*mm1*mm2+32*mm2^2-8*d*mm2^2+32*mm1*s-16*d*mm1*s-16*mm2*s-16*s^2+8*d*s^2+18*mm1*t-9*d*mm1*t-26*mm2*t+7*d*mm2*t-18*s*t+9*d*s*t)*J[0,0])/(64*(d-2))+(mm2*(32*mm1^2-24*d*mm1^2+4*d^2*mm1^2+80*mm1*mm2-48*d*mm1*mm2+8*d^2*mm1*mm2+32*mm2^2-24*d*mm2^2+4*d^2*mm2^2-64*mm1*s+48*d*mm1*s-8*d^2*mm1*s-64*mm2*s+48*d*mm2*s-8*d^2*mm2*s+32*s^2-24*d*s^2+4*d^2*s^2-26*mm1*t+21*d*mm1*t-4*d^2*mm1*t-2*mm2*t+d*mm2*t+26*s*t-21*d*s*t+4*d^2*s*t)*J[0,1])/(16*(d-2)^2),
+-((-32*mm1*mm2-32*mm1*t+8*d*mm1*t-2*t^2+d*t^2)*J[-1,0])/(64*(d-2)*t)-J[0,-2]/32-((-96*mm1^2+32*d*mm1^2-96*mm1*mm2+32*d*mm1*mm2+96*mm1*s-32*d*mm1*s+44*mm1*t-14*d*mm1*t-4*mm2*t+2*d*mm2*t+4*s*t-2*d*s*t-2*t^2+d*t^2)*J[0,-1])/(64*(d-2)*t)-((-32*mm1^2+8*d*mm1^2-48*mm1*mm2+16*mm2^2-8*d*mm2^2+16*mm1*s-32*mm2*s+16*d*mm2*s+16*s^2-8*d*s^2+26*mm1*t-7*d*mm1*t-18*mm2*t+9*d*mm2*t+18*s*t-9*d*s*t)*J[0,0])/(64*(d-2))+((d-3)*mm1*(2*mm1-t)*J[1,-2])/(8*(d-2)*t)+(mm1*(-18*mm1+4*d*mm1-6*mm2+6*s+9*t-2*d*t)*J[1,-1])/(16*(d-2))+(mm1*(32*mm1^2-24*d*mm1^2+4*d^2*mm1^2+80*mm1*mm2-48*d*mm1*mm2+8*d^2*mm1*mm2+32*mm2^2-24*d*mm2^2+4*d^2*mm2^2-64*mm1*s+48*d*mm1*s-8*d^2*mm1*s-64*mm2*s+48*d*mm2*s-8*d^2*mm2*s+32*s^2-24*d*s^2+4*d^2*s^2-2*mm1*t+d*mm1*t-26*mm2*t+21*d*mm2*t-4*d^2*mm2*t+26*s*t-21*d*s*t+4*d^2*s*t)*J[1,0])/(16*(d-2)^2)};
+
+(* For the cross box diagram we get: *)
+
+xboxdiagram = ((mm1+mm2-s-t)^2*Jx[-1,1])/16+((mm1+mm2-s-t)^2*Jx[0,0])/8-((mm1+mm2-s-t)*(-2*mm1^2+d*mm1^2-8*mm1*mm2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2+4*mm1*t-2*d*mm1*t+4*mm2*t-2*d*mm2*t-4*s*t+2*d*s*t-2*t^2+d*t^2)*Jx[0,1])/(8*(d-2))+((mm1+mm2-s-t)^2*Jx[1,-1])/16-((mm1+mm2-s-t)*(-2*mm1^2+d*mm1^2-8*mm1*mm2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2+4*mm1*t-2*d*mm1*t+4*mm2*t-2*d*mm2*t-4*s*t+2*d*s*t-2*t^2+d*t^2)*Jx[1,0])/(8*(d-2))+((-2*mm1^2+d*mm1^2-8*mm1*mm2+2*d*mm1*mm2-2*mm2^2+d*mm2^2+4*mm1*s-2*d*mm1*s+4*mm2*s-2*d*mm2*s-2*s^2+d*s^2+4*mm1*t-2*d*mm1*t+4*mm2*t-2*d*mm2*t-4*s*t+2*d*s*t-2*t^2+d*t^2)^2*Jx[1,1])/(16*(d-2)^2);
+
+
+(* Applying the reductions, adding the diagrams, identifying the triangles, and discarding the bubble, leaves four master integrals: *)
+
+masterintegrals = {BOX, XBOX, TRIUP, TRIDOWN};
+
+(* And the coefficients become *)
+
+integralcoefficients = {((d-2)*mm1^2+2*(d-4)*mm1*mm2+(d-2)*(mm2-s)^2-2*(d-2)*mm1*s)^2/(16*(d-2)^2),
+((d-2)*mm1^2+2*(d-4)*mm1*mm2-2*(d-2)*mm1*(s+t)+(d-2)*(-mm2+s+t)^2)^2/(16*(d-2)^2),
+(16*mm2^3*((-19+(17-4*d)*d)*mm1^2-2*(5+d*(4*d-15))*mm1*mm2-(19+d*(4*d-17))*(mm2-s)^2+2*(19+d*(4*d-17))*mm1*s)+4*mm2^2*((108+d*(25*d-103))*mm1^2+(148+d*(37*d-147))*mm2^2-2*(146+d*(-137+33*d))*mm2*s+(108+d*(25*d-103))*s^2+mm1*((272+22*d*(3*d-13))*mm2-2*(108+d*(25*d-103))*s))*t-4*mm2*((d-2)*(8*d-17)*mm1^2+(186+d*(41*d-177))*mm1*mm2+(d-2)*(35*d-68)*mm2^2-2*(d-2)*(8*d-17)*mm1*s+(-176+(169-41*d)*d)*mm2*s+(d-2)*(8*d-17)*s^2)*t^2+(d-2)*(3*(d-2)*mm1^2+2*(-42+19*d)*mm1*mm2+(63*d-124)*mm2^2-6*(d-2)*mm1*s+2*(40-19*d)*mm2*s+3*(d-2)*s^2)*t^3-(d-2)^2*(3*mm1+13*mm2-3*s)*t^4+(d-2)^2*t^5)/(16*(d-2)^2*(4*mm2-t)^2),
+(-16*(19+d*(4*d-17))*mm1^5+4*mm1^4*(-8*(5+d*(4*d-15))*mm2+8*(19+d*(4*d-17))*s+(148+d*(37*d-147))*t)+(d-2)^2*t^3*(3*(mm2-s)^2-3*(mm2-s)*t+t^2)+(d-2)*mm1*t^2*(-4*(8*d-17)*(mm2-s)^2+2*((-42+19*d)*mm2+(40-19*d)*s)*t-13*(d-2)*t^2)+4*mm1^3*(-4*(19+d*(4*d-17))*(mm2-s)^2+2*((136+11*d*(3*d-13))*mm2+(-146+(137-33*d)*d)*s)*t-(d-2)*(35*d-68)*t^2)+mm1^2*t*(4*(108+d*(25*d-103))*(mm2-s)^2+4*((-186+(177-41*d)*d)*mm2+(176+d*(41*d-169))*s)*t+(d-2)*(63*d-124)*t^2))/(16*(d-2)^2*(4*mm1-t)^2)};
+
+(* Inserting t->0 reproduces the first expressions in the paper: *)
+
+integralcoefficientssoft = {
+((d-2)*mm1^2+2*(d-4)*mm1*mm2+(d-2)*(mm2-s)^2-2*(d-2)*mm1*s)^2/(16*(d-2)^2),
+((d-2)*mm1^2+2*(d-4)*mm1*mm2+(d-2)*(mm2-s)^2-2*(d-2)*mm1*s)^2/(16*(d-2)^2),
+(mm2*((-19+(17-4*d)*d)*mm1^2-2*(5+d*(4*d-15))*mm1*mm2-(19+d*(4*d-17))*(mm2-s)^2+2*(19+d*(4*d-17))*mm1*s))/(16*(d-2)^2),
+(mm1*((-19+(17-4*d)*d)*mm1^2-2*(5+d*(4*d-15))*mm1*mm2-(19+d*(4*d-17))*(mm2-s)^2+2*(19+d*(4*d-17))*mm1*s))/(16*(d-2)^2)};
+
+
+(* and finally inserting d=4 and s = mm1+mm2+2*DP  gives: *)
+
+integralcoefficientsdis4 = {(mm1*mm2-2*DP^2)^2/4, (mm1*mm2-2*DP^2)^2/4, (3*mm2*(mm1*mm2-5*DP^2))/16, (3*mm1*(mm1*mm2-5*DP^2))/16};
